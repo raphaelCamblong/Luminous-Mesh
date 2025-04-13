@@ -2,11 +2,11 @@ version: '3'
 
 tasks:
   build:
-    desc: Build lib1
+    desc: Build api-gateway [plugin]
     cmds:
-      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/api-gateway.so .
+      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/api-gateway.so {{.TASKFILE_DIR}}
 
   test:
-    desc: Test lib1
+    desc: Test api-gateway
     cmds:
-      - go test -v ./...
+      - go test -v {{.TASKFILE_DIR}}/...

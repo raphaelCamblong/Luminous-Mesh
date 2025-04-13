@@ -2,11 +2,11 @@ version: '3'
 
 tasks:
   build:
-    desc: Build lib1
+    desc: Build data-store [plugin]
     cmds:
-      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/data-store.so .
+      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/data-store.so {{.TASKFILE_DIR}}
 
   test:
-    desc: Test lib1
+    desc: Test data-store
     cmds:
-      - go test -v ./...
+      - go test -v {{.TASKFILE_DIR}}/...

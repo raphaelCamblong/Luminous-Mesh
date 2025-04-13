@@ -3,10 +3,12 @@ version: '3'
 tasks:
   build:
     desc: Build core
+    dir: .
     cmds:
-      - go build -o {{.ROOT_DIR}}/{{.BUILD_DIR}}/control-plane  ./cmd/main.go
+      - go build -o {{.ROOT_DIR}}/{{.BUILD_DIR}}/control-plane  {{.TASKFILE_DIR}}/cmd/main.go
 
   test:
     desc: Test core
     cmds:
-      - go test -v ./...
+      - go test -v {{.TASKFILE_DIR}}/...
+

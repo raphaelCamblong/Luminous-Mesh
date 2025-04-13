@@ -6,7 +6,7 @@ includes:
   data-store: ./data-store/Taskfile.yml
 
 vars:
-  BUILD_DIR: build
+  BUILD_DIR: .build
   PLUGINS_DIR: '{{.BUILD_DIR}}/plugins'
 
 tasks:
@@ -23,12 +23,17 @@ tasks:
 
   build:
     desc: Build everything
-    deps: [create-dirs, core:build, api-gateway:build, data-store:build]
+    deps: [create-dirs, api-gateway:build, core:build]
 
   test:
     desc: Run all tests
     cmds:
       - go test -v ./...
+
+  run:
+    desc: Run core
+    cmds:
+      - ./{{.BUILD_DIR}}/control-plane
 
   default:
     desc: Default task

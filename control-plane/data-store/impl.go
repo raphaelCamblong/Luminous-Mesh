@@ -3,7 +3,7 @@ package dataStore
 import (
 	"sync"
 
-	"github.com/luminous-mesh/control-plane/shared/interfaces"
+	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/shared/interfaces"
 )
 
 const PluginSymbolName = "DataStore"

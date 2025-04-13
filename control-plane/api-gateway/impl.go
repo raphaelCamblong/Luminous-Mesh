@@ -1,9 +1,9 @@
-package apiGateway
+package main
 
 import (
 	"sync"
 
-	"github.com/luminous-mesh/control-plane/shared/interfaces"
+	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/shared/interfaces"
 )
 
 var _ interfaces.ApiGateway = &apiGateway{}
