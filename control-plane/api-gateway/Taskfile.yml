@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  build:
+    desc: Build lib1
+    cmds:
+      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/api-gateway.so .
+
+  test:
+    desc: Test lib1
+    cmds:
+      - go test -v ./...
