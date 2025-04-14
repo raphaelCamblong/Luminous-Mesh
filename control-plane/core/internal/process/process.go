@@ -1,8 +1,6 @@
 package process
 
 import (
-	"fmt"
-
 	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/core/internal/infra"
 )
 
@@ -18,12 +16,8 @@ func NewProcess() *Process {
 
 func (p *Process) Launch() {
 	p.infra.LoadPlugins()
+	p.infra.LoadGrpcServer()
 	p.infra.IntegrityCheck()
 
-	fmt.Println(p.infra.Plugins.ApiGateway.GetName())
-	fmt.Println(p.infra.Plugins.ApiGateway.GetVersion())
-	fmt.Println(p.infra.Plugins.ApiGateway.Start())
-	fmt.Println(p.infra.Plugins.DataStore.GetName())
-	fmt.Println(p.infra.Plugins.DataStore.GetVersion())
-	fmt.Println(p.infra.Plugins.DataStore.Start())
+	p.infra.Server.Start(p.infra.Ctx)
 }

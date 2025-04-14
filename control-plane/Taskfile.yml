@@ -32,6 +32,18 @@ tasks:
     desc: Build everything
     deps: [create-dirs, build-all-plugins, core:build]
 
+  build:proto:
+    desc: Build the proto files
+    cmds:
+      - |
+        protoc \
+          --go_out=./shared/proto \
+          --go_opt=paths=source_relative \
+          --go-grpc_out=./shared/proto \
+          --go-grpc_opt=paths=source_relative \
+          -I ../proto \
+          ../proto/*.proto
+
   test:
     desc: Run all tests
     cmds:

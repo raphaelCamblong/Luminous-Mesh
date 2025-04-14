@@ -1,16 +1,22 @@
 package infra
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 
 	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/core/init/config"
+	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/core/init/logger"
+	lmgrpc "github.com/raphaelCamblong/Luminous-Mesh/control-plane/core/internal/grpc"
 	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/core/pkg/plugins"
 	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/shared/interfaces"
+	"go.uber.org/zap"
 )
 
 type Infra struct {
 	Plugins pluginRegistry
+	Server  *lmgrpc.Server
+	Ctx     context.Context
 }
 
 type pluginRegistry struct {
@@ -19,7 +25,9 @@ type pluginRegistry struct {
 }
 
 func NewInfra() *Infra {
-	return &Infra{}
+	return &Infra{
+		Ctx: context.Background(),
+	}
 }
 
 func (i *Infra) IntegrityCheck() {
@@ -61,4 +69,14 @@ func (i *Infra) LoadPlugins() {
 			panic(fmt.Errorf("❌ Failed to load plugin %s: %w", pluginName, err))
 		}
 	}
+}
+
+func (i *Infra) LoadGrpcServer() {
+	server, err := lmgrpc.NewServer()
+	if err != nil {
+		logger.L().Fatal("Failed to create server",
+			zap.Error(err),
+		)
+	}
+	i.Server = server
 }

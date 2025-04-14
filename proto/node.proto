@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+package luminousmesh;
+option go_package = "github.com/luminousmesh/control-plane/proto";
+
+// Node lifecycle and authentication service
+service NodeService {
+  // Initial registration with bootstrap token
+  rpc RegisterNode (RegisterNodeRequest) returns (RegisterNodeResponse) {}
+
+  // Certificate-based authentication and connection establishment
+  rpc Authenticate (AuthenticationRequest) returns (AuthenticationResponse) {}
+
+  // Bidirectional stream for node status updates and control plane commands
+  rpc StreamConnection (stream NodeStatusUpdate) returns (stream ControlPlaneCommand) {}
+
+  // Token rotation for enhanced security
+  rpc RotateToken (TokenRotationRequest) returns (TokenRotationResponse) {}
+}
+
+message RegisterNodeRequest {
+  string bootstrap_token = 1;  // Initial bootstrap token
+  NodeBasicInfo basic_info = 2;
+  bytes csr = 3;  // Certificate Signing Request
+}
+
+message RegisterNodeResponse {
+  bool success = 1;
+  string message = 2;
+  bytes signed_certificate = 3;  // Signed certificate from control plane
+  string node_id = 4;
+  string initial_auth_token = 5;
+  ControlPlaneInfo control_plane_info = 6;
+}
+
+message AuthenticationRequest {
+  string node_id = 1;
+  string auth_token = 2;
+  bytes certificate = 3;
+  NodeBasicInfo basic_info = 4;
+  NodeCapabilities capabilities = 5;
+}
+
+message AuthenticationResponse {
+  bool success = 1;
+  string message = 2;
+  string session_id = 3;
+  int64 token_expiry = 4;
+  NodeConfiguration initial_config = 5;
+}
+
+message NodeStatusUpdate {
+  string node_id = 1;
+  string session_id = 2;
+  NodeStatus status = 3;
+  repeated MetricsReport metrics = 4;
+  int64 timestamp = 5;
+}
+
+message ControlPlaneCommand {
+  string command_id = 1;
+  oneof command {
+    ConfigurationUpdate config_update = 2;
+    HealthCheck health_check = 3;
+    Disconnect disconnect = 4;
+  }
+}
+
+message NodeBasicInfo {
+  string hostname = 1;
+  string ip_address = 2;
+  string version = 3;
+  repeated string supported_model_types = 4;
+  string architecture = 5;
+  map<string, string> labels = 6;
+}
+
+message NodeStatus {
+  enum State {
+    UNKNOWN = 0;
+    HEALTHY = 1;
+    DEGRADED = 2;
+    ERROR = 3;
+    MAINTENANCE = 4;
+  }
+  State state = 1;
+  string status_message = 2;
+  map<string, ResourceStatus> resources = 3;
+}
+
+message ResourceStatus {
+  string name = 1;
+  double usage_percentage = 2;
+  string status = 3;
+}
+
+message MetricsReport {
+  string metric_name = 1;
+  double value = 2;
+  map<string, string> labels = 3;
+}
+
+message TokenRotationRequest {
+  string node_id = 1;
+  string current_token = 2;
+  string session_id = 3;
+}
+
+message TokenRotationResponse {
+  string new_token = 1;
+  int64 expiry = 2;
+}
+
+message ControlPlaneInfo {
+  string api_endpoint = 1;
+  bytes ca_certificate = 2;
+  map<string, string> connection_params = 3;
+}
+
+message ConfigurationUpdate {
+  string config_id = 1;
+  NodeConfiguration configuration = 2;
+}
+
+message HealthCheck {
+  string check_id = 1;
+  repeated string check_items = 2;
+}
+
+message Disconnect {
+  string reason = 1;
+  bool reconnect_allowed = 2;
+  int32 wait_time_seconds = 3;
+}
+
+message NodeConfiguration {
+  map<string, string> settings = 1;
+  repeated string enabled_features = 2;
+  ResourceLimits resource_limits = 3;
+}
+
+message ResourceLimits {
+  int32 max_concurrent_tasks = 1;
+  int32 max_memory_mb = 2;
+  double max_cpu_usage = 3;
+}
+
+message NodeCapabilities {
+  repeated string supported_model_types = 1;
+  string architecture = 2;
+  map<string, string> labels = 3;
+}
+
