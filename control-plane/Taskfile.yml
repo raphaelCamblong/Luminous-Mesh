@@ -16,14 +16,21 @@ tasks:
       - rm -rf {{.BUILD_DIR}}
 
   create-dirs:
+    silent: true
     desc: Create build directories
     cmds:
       - mkdir -p {{.BUILD_DIR}}
       - mkdir -p {{.PLUGINS_DIR}}
 
+  build-all-plugins:
+    desc: 🔧 Building all plugin...
+    deps:
+      - api-gateway:build
+      - data-store:build
+
   build:
     desc: Build everything
-    deps: [create-dirs, api-gateway:build, core:build]
+    deps: [create-dirs, build-all-plugins, core:build]
 
   test:
     desc: Run all tests

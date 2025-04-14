@@ -1,12 +1,23 @@
 version: '3'
 
+vars:
+  PLUGIN_NAME: data-store
+
 tasks:
   build:
-    desc: Build data-store [plugin]
+    desc: Build {{.PLUGIN_NAME}} [plugin]
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
-      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/data-store.so {{.TASKFILE_DIR}}
+      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/{{.PLUGIN_NAME}}.so ./
 
   test:
-    desc: Test data-store
+    desc: Test {{.PLUGIN_NAME}}
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
-      - go test -v {{.TASKFILE_DIR}}/...
+      - go test -v ./...
+
+  clean:
+    desc: Clean {{.PLUGIN_NAME}}
+    dir: "{{.TASKFILE_DIR}}"
+    cmds:
+      - rm -f {{.PLUGIN_NAME}}.so
