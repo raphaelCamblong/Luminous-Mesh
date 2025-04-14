@@ -1,0 +1,9 @@
+[core]
+
+[plugins]
+path = "./.build/plugins"
+load = ["api-gateway", "data-store"]
+
+[log]
+level = "debug"
+file = "logs/app.log"

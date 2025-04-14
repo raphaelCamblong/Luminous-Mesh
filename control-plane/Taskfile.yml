@@ -42,6 +42,11 @@ tasks:
     cmds:
       - ./{{.BUILD_DIR}}/control-plane
 
+  run:dev:
+    desc: Run core in development mode
+    cmds:
+      - ./{{.BUILD_DIR}}/control-plane -c ./config.dev.toml
+
   default:
     desc: Default task
     deps: [build]
