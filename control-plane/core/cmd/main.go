@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/core/internal/process"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	proc := process.NewProcess()
+
+	defer func() {
+		if r := recover(); r != nil {
+			log.Fatalf("❌ Fatal error: %v", r)
+		}
+	}()
+
+	proc.Launch()
 }

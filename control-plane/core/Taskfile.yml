@@ -3,7 +3,7 @@ version: '3'
 tasks:
   build:
     desc: Build core
-    dir: .
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - go build -o {{.ROOT_DIR}}/{{.BUILD_DIR}}/control-plane  {{.TASKFILE_DIR}}/cmd/main.go
 
