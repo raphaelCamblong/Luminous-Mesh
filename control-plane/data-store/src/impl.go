@@ -1,7 +1,7 @@
 package main
 
 import (
-	"sync"
+	"fmt"
 
 	"github.com/raphaelCamblong/Luminous-Mesh/control-plane/shared/interfaces"
 )
@@ -11,19 +11,22 @@ const PluginSymbolName = "DataStore"
 var _ interfaces.DataStore = &dataStore{}
 
 type dataStore struct {
-	mu sync.Mutex
+}
+
+func (d *dataStore) GetName() string {
+	return "data-store"
+}
+
+func (d *dataStore) GetVersion() string {
+	return "0.0.1"
 }
 
 func (d *dataStore) Start() error {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-
+	fmt.Println("Starting data-store")
 	return nil
 }
 
 func (d *dataStore) Stop() error {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-
+	fmt.Println("Stopping data-store")
 	return nil
 }

@@ -1,21 +1,21 @@
 version: '3'
 
 vars:
-  PLUGIN_NAME: api-gateway
+  PLUGIN_NAME_AG: api-gateway
 
 tasks:
   build:
-    desc: Build {{.PLUGIN_NAME}} [plugin]
+    desc: Build {{.PLUGIN_NAME_AG}} [plugin]
     dir: "{{.TASKFILE_DIR}}"
     cmds:
-      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/{{.PLUGIN_NAME}}.so ./
+      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/{{.PLUGIN_NAME_AG}}.so ./src/
 
   test:
-    desc: Test {{.PLUGIN_NAME}}
+    desc: Test {{.PLUGIN_NAME_AG}}
     cmds:
       - go test -v {{.TASKFILE_DIR}}/...
 
   clean:
-    desc: Clean {{.PLUGIN_NAME}}
+    desc: Clean {{.PLUGIN_NAME_AG}}
     cmds:
-      - rm -f {{.TASKFILE_DIR}}/{{.PLUGIN_NAME}}.so
+      - rm -f {{.TASKFILE_DIR}}/{{.PLUGIN_NAME_AG}}.so

@@ -8,7 +8,7 @@ tasks:
     desc: Build {{.PLUGIN_NAME}} [plugin]
     dir: "{{.TASKFILE_DIR}}"
     cmds:
-      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/{{.PLUGIN_NAME}}.so ./
+      - go build -buildmode=plugin -o {{.ROOT_DIR}}/{{.PLUGINS_DIR}}/{{.PLUGIN_NAME}}.so ./src/
 
   test:
     desc: Test {{.PLUGIN_NAME}}
